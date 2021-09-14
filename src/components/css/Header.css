@@ -4,6 +4,7 @@ header{
     justify-content: space-around;
     align-items: center;
     overflow: hidden;
+    background-color: floralwhite;
 }
 
 header .logo a

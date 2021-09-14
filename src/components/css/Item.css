@@ -1,0 +1,21 @@
+
+.item
+{
+    background-color: beige;
+    width:200px;
+    margin:50px;
+    display: inline-block;
+}
+img
+{
+    height:100px;
+    width: 100px;
+    padding:0 30px;
+
+}
+
+p
+{
+    padding:0 30px;
+}
+
