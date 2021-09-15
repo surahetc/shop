@@ -3,6 +3,7 @@ import {Link} from 'react-router-dom'
 import "./css/Header.css"
 
 function Header(props) {
+
     return (
        <header>
            <div className="logo">
@@ -15,6 +16,7 @@ function Header(props) {
                    <li><Link to="/register">Register</Link></li>
                    <li><Link to="/products">Products</Link></li>
                    <li><Link to="/wishlist">Wishlist</Link></li>
+                   <li><Link to="/admin">Admin</Link></li>
                    <li><Link to="/cart"><span>0</span>Cart</Link></li>
                </ul>
             </nav>
