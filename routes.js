@@ -9,7 +9,7 @@ routes.post('/admin/add',adminController.addItem );
 routes.post('/admin/update',adminController.updateItem);
 routes.post('/admin/delete',adminController.deleteItem);
 
-// routes.get("/products/items",itemController.getItems);
+routes.get("/products/items",itemController.getItems);
 
 // routes.post("/login",userController.login)
 // routes.post("/register",userController.register);

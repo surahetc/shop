@@ -1,9 +1,15 @@
 const mongoose=require('mongoose');
 const item=require('../models/item');
 
-module.exports.getItems=(req,res)=>
+module.exports.getItems= (req,res)=>
 {
-    console.log("Hello");
+     item.find({}).then(items=>
+        {
+            res.send(items)
+        }).catch(error=>{
+            if(error)
+                res.status(500).send("Error in collecting documents");
+        })
 }
 
 

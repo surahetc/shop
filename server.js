@@ -1,4 +1,4 @@
-
+const cors=require('cors')
 const routes = require('./routes');
 const express=require('express')
 var bodyParser = require('body-parser');
@@ -14,6 +14,10 @@ mongoose.connection.on('error', console.error.bind(console, 'MongoDB connection 
 const app= express();
 const port = 5000;
 app.use(bodyParser.json()); 
+app.use(cors({
+    origin:"*",
+    credentials:true
+}))
 app.use(bodyParser.urlencoded({ extended: true })); 
 app.use('/', routes);
 
@@ -76,6 +80,10 @@ app.post('/register',(req,res)=>{
 //                     });
     
 });
+
+
+
+
 
 app.listen(port, () => {
     console.log("Server running at ",port)
