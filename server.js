@@ -5,6 +5,10 @@ var bodyParser = require('body-parser');
 var user =require( './models/user');
 const mongoose=require('mongoose');
 var jwt = require('jsonwebtoken');
+const auth = require("./middleware/auth");
+const cookieParser=require('cookie-parser');
+const cartRoutes=require('./cartRoutes')
+const wishlistRoutes=require('./wishlistRoutes')
 
 
 
@@ -15,24 +19,60 @@ const app= express();
 const port = 5000;
 app.use(bodyParser.json()); 
 app.use(cors({
-    origin:"*",
+    origin:"http://localhost:3000",
+    methods: ['POST', 'PUT', 'GET', 'OPTIONS', 'HEAD'],
     credentials:true
 }))
 app.use(bodyParser.urlencoded({ extended: true })); 
+
+app.use(cookieParser());
+
+
+app.use('/wishlist',wishlistRoutes)
+app.use('/cart',cartRoutes)
 app.use('/', routes);
 
-
-app.post('/login', (req,res)=>
+app.get('/getUser',async (req,res)=>
 {
+    const token =req.cookies.token;
+ 
 
-     user.findOne({username:req.body.username,password:req.body.password},(err,data)=>{
+    if (!token) {
+      return res.status(403).send("A token is required for authentication");
+    }
+    try {
+      const decoded = await jwt.verify(token, "This is secret text");
+
+      res.send(JSON.stringify(decoded.username))
+    } catch (err) {
+      return res.status(401).send("Invalid Token");
+    }
+   
+ 
+    
+    
+    
+})
+
+app.post('/login',async (req,res)=>
+{
+    
+
+     user.findOne({username:req.body.username,password:req.body.password},async (err,data)=>{
         if(err)
         {
-            res.send("User not found");
+            res.send("Wrong credentials")
         }
-        if(data)
+        else if(data)
         {
-          res.send(`Welcome ${data.username}`)
+            const token=await jwt.sign({username:data.username},"This is secret text",{expiresIn: 120});
+
+            
+            
+            res.cookie('token',token,{
+                httpOnly:true
+            })
+            res.redirect("/products")
         }
         
         else
@@ -45,39 +85,32 @@ app.post('/login', (req,res)=>
 
 
 
-app.post('/register',(req,res)=>{
+
+app.post('/register',async (req,res)=>{
 
     
 
     if(req.body.password!=req.body.passwordRepeat)
     res.send("Password not same");
 
-    console.log(req.body.username)
+
 
     newUser=new user();
     newUser.username=req.body.username;
     newUser.password=req.body.password;
-    newUser.save((err)=>{
+    try
+    {
+        const save=await newUser.save();
+    }
+    catch(err)
+    {
         if(err)
         {
-            res.send("User already exists")
+            res.json({msg:'Error : The user is not saved'})
         }
-        else
-        res.send("Registration done")
-    })
-
-//     newUser.save().then(user => {
-//                                     jwt.sign({ id: user.username },"this is the secret text!!!!",{ expiresIn: 3600 },(err, token) => {
-//                                                                                                                                     if(err) throw err;
-//                                 res.json({
-//                                     token,
-//                                     user: {
-//                                         username:user.username
-//                                     }
-//                                 });
-//                             }
-//                         )
-//                     });
+    }
+    const token = await jwt.sign({username:newUser.username},"This is secret text",{expiresIn: 120})
+    res.status(200).json(token);
     
 });
 

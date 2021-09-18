@@ -1,12 +1,11 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-var uniqueValidator = require('mongoose-unique-validator');
+
 
 const itemSchema = new Schema({
     name: {
         type: String,
-        required: true,
-        unique:true
+        required: true
     },
     imgSrc:
     {
@@ -23,7 +22,6 @@ const itemSchema = new Schema({
         default: Date.now
     },
 });
-itemSchema.plugin(uniqueValidator, {message: 'is already taken.'});
 
-
-module.exports = item = mongoose.model('item',itemSchema);
+const item = mongoose.model('item',itemSchema);
+module.exports={itemSchema,item}
