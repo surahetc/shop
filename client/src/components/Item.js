@@ -28,7 +28,7 @@ function Item(props) {
     function handleAddToWishlist(e)
     {
         e.preventDefault();
-        axios.get(`http://localhost:5000/wishlist/add/${user}/${props.title}`)
+        axios.get(`http://localhost:5000/wishlist/addTowishlist/${user}/${props.title}`)
     }
 
     function handleAddToCart(e)

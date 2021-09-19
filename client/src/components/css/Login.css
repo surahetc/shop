@@ -3,19 +3,19 @@
         width: 382px;  
         overflow: hidden;  
         margin: auto;  
-        margin: 20 0 0 450px;  
+        margin: 100px 300px;
         padding: 80px;  
-        background: #23463f;  
-        border-radius: 15px ;  
+        background: #9ae9d9;  
+        border-radius: 5px ;  
           
 }  
 h2{  
     text-align: center;  
-    color: #277582;  
+    color: #151a1b;  
     padding: 20px;  
 }  
 label{  
-    color: #08ffd1;  
+    color: #080a0a;  
     font-size: 17px;  
 }  
 #uname{  

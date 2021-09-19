@@ -28,16 +28,24 @@ module.exports.buy = (req,res)=>{
 
 
 module.exports.getItems = (req,res) => {
-    console.log("GETTING ITEMS")
+    console.log("GETTING ITEMS cart")
     cart.findOne({username:req.params.user},(err,data)=>
     {
         if(err)
         {
-            console.log('err')
+            res.status(400).send({
+                message: 'This is an error!'
+             })
         }
         else
         {
-            res.send(data.items)
+            if(!data)
+            res.status(400).send(null)
+            else
+            {
+                res.send(data.items)
+            }
+            
         }
     })
 }

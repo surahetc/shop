@@ -1,18 +1,34 @@
 import React from "react";
 import axios from "axios";
-import ItemWishlist from "./ItemWishlist";
+
+
 
 function Wishlist() {
-  const [items, setItems] = React.useState([]);
   const [user, setUser] = React.useState("");
+  const[items,setItems]=React.useState([])
 
-  function deleteAll()
+
+  function handleBuy()
   {
-    axios.get('http://localhost:5000/wishlist/delete')
+    axios.get(`http://localhost:5000/wishlist/delete/${user}`)
+    setItems([])
   }
 
-
   React.useEffect(() => {
+
+
+    
+
+
+
+
+
+
+
+
+
+
+
     axios
       .get("http://localhost:5000/getUser", {
         headers: {
@@ -22,40 +38,71 @@ function Wishlist() {
       })
       .then((response) => {
         if (response.data) {
+          axios.get(`http://localhost:5000/wishlist/getItem/${response.data}`).then(response=>{
+            if(response.data===null || response.data===[])
+            setItems([])
+            else
+
+      setItems(response.data)
+        
+      }).catch(err=>
+        {
+          setItems([])
+        })
           setUser(response.data);
         }
       })
       .catch((err) => {
         if (err) {
-          setUser("");
+          setItems([])
+          setUser("Error");
         }
       });
 
-    axios
-      .get(`http://localhost:5000/wishlist/view/${user}`)
-      .then((response) => {
-        setItems(response.data);
-      })
-      .catch((err) => {
-        if (err) console.log("Fetching error");
-      });
-  }, []);
 
+      
+  }
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  
+  , []);
+
+  if(user==="Error")
   return (
     <div>
-      <h2>{user}</h2>
-      {items.map((item) => {
-        return (
-          <ItemWishlist
-            key={item.name}
-            title={item.name}
-            src={item.imgSrc}
-            price={item.price}
-          />
-        );
+      <h2>Please Login </h2>
+    </div>
+  );
+
+  else if(items.length < 1 )
+  return (
+    <div>
+
+      <h2>Welcome {user}, No items in your wishlist</h2>
+    </div>
+  );
+
+  else
+  return (
+    <div>
+      <h2>Welcome {user}, Here are your wishlist products</h2>
+
+
+      {
+      items.map((item)=>{
+        return (<h3>{item.name}</h3>)
+
       })}
 
-      <div><button className="red deleteAll" onClick={deleteAll}>Delete All</button></div>
+      <button className="deleteAll" onClick={handleBuy}>Delete All wishlist</button>
     </div>
   );
 }

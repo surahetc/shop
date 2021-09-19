@@ -1,15 +1,10 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const {itemSchema}=require('./item')
-
 
 const wishlistSchema = new Schema({
-    username: {type: String},
-    items  :[itemSchema]
+    username: {type: String},items:[{name:{type: String}}]
             
             
 })
 
-wishlist = mongoose.model('wishlist',wishlistSchema)
-
-module.exports =wishlist ;
+module.exports = wishlist = mongoose.model('wishlist',wishlistSchema);

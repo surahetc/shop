@@ -46,7 +46,7 @@ function Header(props) {
                    <li><Link to="/products">Products</Link></li>
                    <li><Link to="/wishlist">Wishlist</Link></li>
 
-                   <li><Link to="/cart"><span>0</span>Cart</Link></li>
+                   <li><Link to="/cart">Cart</Link></li>
                </ul>
             </nav>
        </header>
